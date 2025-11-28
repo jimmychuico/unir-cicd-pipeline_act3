@@ -8,10 +8,8 @@ server:
 	docker run --rm --name apiserver --network-alias apiserver --env PYTHONPATH=/opt/calc --env FLASK_APP=app/api.py -p 5000:5000 --workdir=//opt/calc calculator-app:latest flask run --host=0.0.0.0
 
 test-unit:
-	docker run --name unit-tests --env PYTHONPATH=/opt/calc calculator-app:latest pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
+	docker run --name unit-tests --env PYTHONPATH=/opt/calc -w /opt/calc calculator-app:latest pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
 	docker cp unit-tests:/opt/calc/results/. results/
-
-	
 	docker rm unit-tests || true
 
 test-api:
