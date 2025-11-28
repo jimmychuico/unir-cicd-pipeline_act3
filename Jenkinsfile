@@ -17,7 +17,7 @@ pipeline {
 
         stage('Unit tests') {
             steps {
-                bat 'mkdir results'
+                bat 'if not exist results mkdir results'
                 bat 'make test-unit'
                 archiveArtifacts artifacts: 'results/*.xml'
             }
