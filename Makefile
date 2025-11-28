@@ -16,8 +16,8 @@ test-unit:
     # ELIMINAMOS -w /opt/calc. 
     # AJUSTAMOS PYTHONPATH para incluir el directorio actual (.:) en Linux.
     docker run --name unit-tests --env PYTHONPATH=/opt/calc:. calculator-app:latest pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
-    docker cp unit-tests:/opt/calc/results/. results/
-    docker rm unit-tests || true
+	docker cp unit-tests:/opt/calc/results/. results/
+	docker rm unit-tests || true
 
 test-api:
 	docker network create calc-test-api || true
