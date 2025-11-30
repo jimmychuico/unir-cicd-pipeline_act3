@@ -99,8 +99,43 @@ pipeline {
     }
 
     post {
-        always {
-            cleanWs()
-        }
+    always {
+        cleanWs()
     }
+    success {
+        mail to: 'jfcpjimmy@gmail.com',
+            subject: "✔️ ÉXITO en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            body: """
+        Hola,
+
+        La pipeline finalizó correctamente. 🎉
+
+        Proyecto: ${env.JOB_NAME}
+        Build: ${env.BUILD_NUMBER}
+
+        Puedes ver los detalles aquí:
+        ${env.BUILD_URL}
+
+        Saludos.
+        """
+    }
+    failure {
+                mail to: 'jfcpjimmy@gmail.com',
+                    subject: "❌ FALLA en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: """
+        Hola,
+
+        La pipeline ha fallado. 🚨
+
+        Proyecto: ${env.JOB_NAME}
+        Build: ${env.BUILD_NUMBER}
+
+        Revisa los logs aquí:
+        ${env.BUILD_URL}
+
+        Saludos.
+        """
+    }
+    }
+
 }

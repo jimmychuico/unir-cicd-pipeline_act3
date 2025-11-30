@@ -19,7 +19,7 @@ test-api:
 	docker network create calc-test-api || true
     
 	# 1. Ejecutamos el servidor de API (Eliminamos PYTHONPATH)
-	docker run -d --network calc-test-api --name apiserver --env FLASK_APP=app/api.py -p 5000:5000 calculator-app:latest flask run --host=0.0.0.0
+	docker run -d --network calc-test-api --name apiserver --env FLASK_APP=app//api.py -p 5000:5000 calculator-app:latest flask run --host=0.0.0.0
     
 	# 2. Ejecutamos los tests (Eliminamos PYTHONPATH y apuntamos a test/rest)
 	docker run --network calc-test-api --name api-tests --env BASE_URL=http://apiserver:5000/ calculator-app:latest python -m pytest test/rest --junit-xml=results/api_result.xml -m api || true
