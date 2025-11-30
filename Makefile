@@ -10,8 +10,9 @@ server:
 test-unit:
 	# ELIMINAMOS -w /opt/calc y ELIMINAMOS --env PYTHONPATH.
 	# Usamos "python -m pytest" para forzar a Python a buscar en el directorio actual.
-	docker run --name unit-tests calculator-app:latest python -m pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
-	docker cp unit-tests:/opt/calc/results/. results/
+	# coloco algo para erro "1"
+ 	docker run --name unit-tests calculator-app1:latest python -m pytest --cov --cov-report=xml:results/coverage.xml --cov-report=html:results/coverage --junit-xml=results/unit_result.xml -m unit || true
+	docker cp unit-tests:/opt/calc1/results/. results/
 	# Aseguramos que la eliminación sea siempre exitosa
 	docker rm --force unit-tests || true
 	
