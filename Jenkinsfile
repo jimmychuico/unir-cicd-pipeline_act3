@@ -16,10 +16,9 @@ pipeline {
         }
         stage('Unit tests') {
             steps {
-                script { // Necesitas el bloque 'script' para usar lógica try/catch
+                script { 
                     // 1. Crear el directorio de resultados en el Workspace de Jenkins
                     bat 'if not exist results mkdir results' 
-                    
                     // 2. Ejecutar los tests, permitiendo que fallen suavemente
                     try {
                         bat 'make test-unit'
@@ -31,7 +30,6 @@ pipeline {
                         // echo "Error capturado: ${e}"
                     }
                 }
-                
                 // 3. Archivar los artefactos (ahora fuera del script, si es posible)
                 archiveArtifacts artifacts: 'results/*.xml, results/coverage/**'
                 
@@ -60,10 +58,6 @@ pipeline {
                 always {
                     // Archivamos los artefactos generados (aunque el archivo de tests esté vacío o no exista)
                     archiveArtifacts artifacts: 'results/api_result.xml'
-                    
-                    // El Junit buscará el archivo. Si no existe porque make falló antes de generarlo, 
-                    // este paso fallará, pero al estar en el bloque 'post', no detendrá el pipeline.
-                    // Para que no falle, lo ideal es usar el parámetro 'testResults' en el junit:
                     junit testResults: 'results/api_result.xml'
                 }
             }
@@ -104,11 +98,11 @@ pipeline {
     }
     success {
         mail to: 'jfcpjimmy@gmail.com',
-            subject: "✔️ ÉXITO en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+            subject: "ÉXITO en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
             body: """
         Hola,
 
-        La pipeline finalizó correctamente. 🎉
+        La pipeline finalizó correctamente. 
 
         Proyecto: ${env.JOB_NAME}
         Build: ${env.BUILD_NUMBER}
@@ -121,11 +115,11 @@ pipeline {
     }
     failure {
                 mail to: 'jfcpjimmy@gmail.com',
-                    subject: "❌ FALLA en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    subject: " FALLA en la pipeline: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                     body: """
         Hola,
 
-        La pipeline ha fallado. 🚨
+        La pipeline ha fallado. 
 
         Proyecto: ${env.JOB_NAME}
         Build: ${env.BUILD_NUMBER}
